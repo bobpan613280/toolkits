@@ -1,0 +1,28 @@
+安装cmake-gui
+sudo apt-get install cmake-qt-gui
+打开界面
+cmake-gui
+
+通过界面配置build工程，在build目录中make
+（此方法可减少错误）
+
+1 创建路径 mkdir build output
+2 使用cmake-gui配置 （基本使用看cmake-gui的使用）
+3 点击configure时会显示选择的平台CmakeSetup, arm交叉编译，选Specify options for cross-compiling最后一项,然后next
+4 在弹出的页面中Compilers分别选择指定编译器的路径 arm-gcc和arm-g++，Find Program 设置target ROOT的路径为编译器的根目录路径，最后点击finish
+5 配置选项 取消WITH_GTK WITH_TIFF WITH_QT （酌情取消CUDA相关和video的安装库）
+6 找到：CMAKE_INSTALL_PREFIX:PATH=/usr/local
+    修改为：CMAKE_INSTALL_PREFIX:PATH=/home/bob/ArmTools/opencv
+7 点击Generate进行配置 
+8 进入build 使用make -j4 编译
+9 编译过程中会出错，在编译png的库时，找不到zlib.h
+  修改顶层目录的
+    CMakeLists.txt
+    在文件中找到 ocv_include_directories(${OPENCV_CONFIG_FILE_INCLUDE_DIR})
+    然后在后面添加一行 ocv_include_directories(./3rdparty/zlib/) 
+    {//添加后的结果
+        ocv_include_directories(${OPENCV_CONFIG_FILE_INCLUDE_DIR})
+        ocv_include_directories(./3rdparty/zlib/) 
+    }
+10 继续使用make -j4 编译
+11 使用make install 安装

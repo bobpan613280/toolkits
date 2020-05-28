@@ -1,0 +1,15 @@
+boost库ARM移植步骤
+（1）运行下面命令 屏蔽部分不需要编译的运行库 
+--without-libraries=后面连接的是不被编译的库 
+--prefix=后面是编译后库需要安装的路径
+./bootstrap.sh --without-libraries=atomic,chrono,context,coroutine,coroutine2,log,python,wave,filesystem,graph,graph_parallel,test --prefix=/home/gump/boost_arm
+./bootstrap.sh --without-libraries=atomic,chrono,context,coroutine,coroutine2,log,python,wave,filesystem,graph,graph_parallel,test --prefix=/home/bob/Install/boost_arm
+（2）生成文件有b2、bjam和project-config.jam 修改project-config.jam文件里面的编译器为自己指定的编译器
+using gcc : : /root/Qt-ARM/gcc-4.4.4-glibc-2.11.1-multilib-1.0/arm-fsl-linux-gnueabi/bin/arm-fsl-linux-gnueabi-gcc ;
+
+注意：这中间是有空格的
+
+（3）执行./bjam进行编译 生成的lib默认在stage文件夹下
+（4）执行./bjam install 安装 目录为--prefix指定的安装目录
+
+
